@@ -4,9 +4,12 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { auth, db } from '@/lib/firebaseConfig'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { user } = useAuth()
 
   const handleLogin = async () => {
     try {
@@ -14,7 +17,6 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, provider)
       const user = result.user
 
-      // Salva o usuário no Firestore
       await setDoc(doc(db, 'users', user.uid), {
         name: user.displayName,
         email: user.email,
@@ -22,13 +24,20 @@ export default function LoginPage() {
         createdAt: new Date(),
       })
 
-      alert(`Bem-vinda, ${user.displayName}!`)
-      router.push('/') // Redireciona para home ou dashboard
+      console.log('Login realizado. Aguardando redirecionamento...')
+      // O redirecionamento agora será feito pelo useEffect
     } catch (error) {
       console.error('Erro ao fazer login:', error)
       alert('Falha no login. Tente novamente.')
     }
   }
+
+  useEffect(() => {
+    if (user) {
+      console.log('Usuário disponível. Redirecionando...')
+      router.push('/dashboard')
+    }
+  }, [user, router])
 
   return (
     <main className="flex flex-col h-screen items-center justify-center bg-[#F7E8E3] gap-6 px-4">
