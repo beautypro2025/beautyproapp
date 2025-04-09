@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import VideoBackground from '@/components/VideoBackground'
+import { VideoBackground } from '@/components/VideoBackground'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
