@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss"
-import forms from '@tailwindcss/forms'
 
-const config: Config = {
+const config = {
   darkMode: ['class'],
   content: [
     './src/pages/**/*.{ts,tsx}',
@@ -99,7 +98,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [forms],
-}
+  plugins: [require('@tailwindcss/forms')],
+} satisfies Config
 
 export default config 
