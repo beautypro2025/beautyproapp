@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -6,31 +6,33 @@ interface VideoBackgroundProps {
   className?: string;
 }
 
-export default function VideoBackground({ 
-  videoUrl, 
+export const VideoBackground: React.FC<VideoBackgroundProps> = ({
+  videoUrl,
   overlayOpacity = 0.5,
-  className = ""
-}: VideoBackgroundProps) {
+  className = '',
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.75;
+    const video = videoRef.current;
+    if (video) {
+      video.playbackRate = 0.75;
       
       const handleError = () => {
         console.error(`Erro ao carregar vídeo: ${videoUrl}`);
         setError(true);
       };
 
-      videoRef.current.addEventListener('error', handleError);
+      video.addEventListener('error', handleError);
       return () => {
-        if (videoRef.current) {
-          videoRef.current.removeEventListener('error', handleError);
+        if (video) {
+          video.removeEventListener('error', handleError);
+          video.playbackRate = 1;
         }
       };
     }
-  }, [videoUrl]);
+  }, []);
 
   if (error) {
     return (

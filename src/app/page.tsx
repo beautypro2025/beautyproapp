@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import ImageShowcase from '@/components/ImageShowcase'
-import VideoBackground from '@/components/VideoBackground'
+import { VideoBackground } from '@/components/VideoBackground'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -64,10 +64,13 @@ export default function Home() {
 
           <section className="hero-section">
             <div className="hero-background">
-              <img
+              <Image 
                 src="/images/hero-bg.jpg"
-                alt="Fundo do salão de beleza"
-                className="w-full h-full object-cover"
+                alt="BeautyPro Background"
+                width={1920}
+                height={1080}
+                className="absolute inset-0 w-full h-full object-cover"
+                priority
               />
             </div>
 
