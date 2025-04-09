@@ -1,11 +1,11 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import firebase from 'firebase/app'
+import { User, onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/lib/firebaseConfig'
 
 interface AuthContextType {
-  user: firebase.User | null
+  user: User | null
   logout: () => void
 }
 
@@ -17,10 +17,10 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<firebase.User | null>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser)
     })
 
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const logout = async () => {
-    await auth.signOut()
+    await signOut(auth)
     setUser(null)
   }
 
