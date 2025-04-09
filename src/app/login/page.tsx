@@ -1,53 +1,79 @@
 'use client'
-
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
-import { auth, db } from '@/lib/firebaseConfig'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import VideoBackground from '@/components/VideoBackground'
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { user } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleLogin = async () => {
-    try {
-      const provider = new GoogleAuthProvider()
-      const result = await signInWithPopup(auth, provider)
-      const user = result.user
-
-      await setDoc(doc(db, 'users', user.uid), {
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        createdAt: new Date(),
-      })
-
-      console.log('Login realizado. Aguardando redirecionamento...')
-      // O redirecionamento agora será feito pelo useEffect
-    } catch (error) {
-      console.error('Erro ao fazer login:', error)
-      alert('Falha no login. Tente novamente.')
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Implementar lógica de login aqui
   }
 
-  useEffect(() => {
-    if (user) {
-      console.log('Usuário disponível. Redirecionando...')
-      router.push('/dashboard')
-    }
-  }, [user, router])
-
   return (
-    <main className="flex flex-col h-screen items-center justify-center bg-[#F7E8E3] gap-6 px-4">
-      <h1 className="text-2xl font-bold text-[#C27BA0]">Entrar com Google</h1>
-      <button
-        onClick={handleLogin}
-        className="bg-[#C27BA0] text-white px-6 py-3 rounded-lg hover:bg-[#a05e85] transition"
+    <div className="min-h-screen relative flex items-center justify-center">
+      <VideoBackground
+        videoUrl="/videos/beauty-salon-2.mp4"
+        overlayOpacity={0.4}
+        className="fixed inset-0 -z-10"
+      />
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl"
       >
-        Login com Gmail
-      </button>
-    </main>
+        <h2 className="text-3xl font-playfair text-white text-center mb-8">
+          Bem-vindo ao BeautyPro
+        </h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="seu@email.com"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-white/80 mb-2">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="••••••••"
+            />
+          </div>
+          
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors duration-200"
+          >
+            Entrar
+          </button>
+        </form>
+        
+        <p className="mt-6 text-center text-white/60 text-sm">
+          Não tem uma conta?{' '}
+          <a href="/register" className="text-primary hover:text-primary-dark">
+            Cadastre-se
+          </a>
+        </p>
+      </motion.div>
+    </div>
   )
 }

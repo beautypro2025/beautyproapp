@@ -1,0 +1,17 @@
+{
+  "name": "BeautyPro",
+  "short_name": "BeautyPro",
+  "description": "Sistema completo para profissionais da beleza",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDF8F6",
+  "theme_color": "#b5715f",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+} 

@@ -1,33 +1,54 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, Poppins } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const playfair = Playfair_Display({ 
   subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-theano'
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const poppins = Poppins({
+  weight: ['300', '400', '500'],
   subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins'
 })
 
 export const metadata: Metadata = {
-  title: 'BeautyPro',
-  description: 'Sistema de agendamento para estúdios de beleza',
+  title: 'BeautyPro - Sistema Completo para Profissionais da Beleza',
+  description: 'Gerencie seu studio, barbearia ou clínica de estética com agendamento online, gestão financeira e muito mais.',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/logo.svg',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  themeColor: '#FDF8F6',
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang="pt-br">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="pt-BR" className={`${playfair.variable} ${poppins.variable}`}>
+      <head>
+        <link rel="icon" href="/favicon.svg" sizes="any" />
+        <link rel="apple-touch-icon" href="/logo.svg" />
+      </head>
+      <body className={poppins.className}>
         <AuthProvider>
-          {children}
+          <div className="min-h-screen">
+            {children}
+          </div>
         </AuthProvider>
       </body>
     </html>
