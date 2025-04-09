@@ -1,6 +1,13 @@
 import { CalendarDays, DollarSign, Users } from 'lucide-react'
+import { LucideIcon } from 'lucide-react'
 
-export const features = [
+interface Feature {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+export const features: Feature[] = [
   {
     title: 'Agenda Online',
     description: 'Agendamento 24h com confirmação automática e lembretes por WhatsApp',
