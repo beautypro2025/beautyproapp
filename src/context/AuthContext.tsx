@@ -1,17 +1,18 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { User, onAuthStateChanged, signOut } from 'firebase/auth'
+import { User } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/lib/firebaseConfig'
 
 interface AuthContextType {
   user: User | null
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  logout: () => {},
+  logout: async () => {},
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -20,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
       setUser(firebaseUser)
     })
 
@@ -28,13 +29,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const logout = async () => {
-    await signOut(auth)
-    setUser(null)
+    try {
+      await signOut(auth)
+      setUser(null)
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error)
+    }
   }
 
-  return (
-    <AuthContext.Provider value={{ user, logout }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>
 }
