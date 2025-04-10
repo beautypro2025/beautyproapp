@@ -7,6 +7,13 @@ export interface User extends FirebaseUser {
   updatedAt?: Timestamp
 }
 
+export interface AuthContextType {
+  user: User | null
+  loading: boolean
+  signIn: (email: string, password: string) => Promise<void>
+  signOut: () => Promise<void>
+}
+
 export interface Appointment {
   id: string
   clientId: string

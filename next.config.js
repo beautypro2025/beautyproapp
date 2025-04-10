@@ -22,6 +22,9 @@ const nextConfig = {
     '@firebase/firestore',
     'undici'
   ],
+  experimental: {
+    swcMinify: true
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -38,9 +41,17 @@ const nextConfig = {
         https: false,
         url: false,
         zlib: false,
-        xmlhttprequest: require.resolve('xmlhttprequest')
       };
     }
+
+    config.module.rules.push({
+      test: /node_modules\/undici\/.*\.js$/,
+      type: 'javascript/auto',
+      resolve: {
+        fullySpecified: false
+      }
+    });
+
     return config;
   }
 };

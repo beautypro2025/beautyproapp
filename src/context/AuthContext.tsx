@@ -2,19 +2,21 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { User } from 'firebase/auth'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/lib/firebaseConfig'
 
 // Verifica se estamos no ambiente do navegador
 const isBrowser = typeof window !== 'undefined'
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null
+  signIn: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  signIn: async () => {},
   logout: async () => {},
 })
 
@@ -33,6 +35,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
+  const signIn = async (email: string, password: string) => {
+    if (!isBrowser) return
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      setUser(userCredential.user)
+    } catch (error) {
+      console.error('Erro ao fazer login:', error)
+      throw error
+    }
+  }
+
   const logout = async () => {
     if (!isBrowser) return
 
@@ -44,5 +58,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, signIn, logout }}>{children}</AuthContext.Provider>
 }
