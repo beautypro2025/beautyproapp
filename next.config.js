@@ -2,10 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [],
+    domains: ['fonts.gstatic.com'],
     unoptimized: true,
   },
-  transpilePackages: ['@firebase/auth', 'firebase', '@firebase/app', '@firebase/firestore'],
+  transpilePackages: [
+    '@firebase/auth',
+    'firebase',
+    '@firebase/app',
+    '@firebase/firestore',
+    'undici'
+  ],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -37,6 +43,19 @@ const nextConfig = {
           name: '[name].[hash].[ext]',
         },
       },
+    });
+
+    // Adiciona suporte para private class fields
+    config.module.rules.push({
+      test: /\.m?js$/,
+      include: /node_modules\/undici/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-proposal-private-property-in-object']
+        }
+      }
     });
 
     return config;
