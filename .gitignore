@@ -1,6 +1,5 @@
 # 🔧 Node
 node_modules/
-package-lock.json
 
 # 🔧 Build e cache
 .next/
