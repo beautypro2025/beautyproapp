@@ -1,5 +1,5 @@
 ﻿// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
+import { initializeApp, getApps } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
@@ -12,8 +12,8 @@ const firebaseConfig = {
   appId: '1:483425856172:web:2ee7af0350502333cd0d09',
 }
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig)
+// Initialize Firebase only on client side
+let app = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig)
 
 // Exporta as instâncias de auth e firestore
 export const auth = getAuth(app)

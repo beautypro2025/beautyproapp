@@ -3,22 +3,23 @@ import { Playfair_Display, Poppins } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-theano'
+  variable: '--font-theano',
 })
 
 const poppins = Poppins({
   weight: ['300', '400', '500'],
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-poppins'
+  variable: '--font-poppins',
 })
 
 export const metadata: Metadata = {
   title: 'BeautyPro - Sistema Completo para Profissionais da Beleza',
-  description: 'Gerencie seu studio, barbearia ou clínica de estética com agendamento online, gestão financeira e muito mais.',
+  description:
+    'Gerencie seu studio, barbearia ou clínica de estética com agendamento online, gestão financeira e muito mais.',
   manifest: '/manifest.json',
   icons: {
     icon: '/favicon.svg',
@@ -33,22 +34,16 @@ export const metadata: Metadata = {
   themeColor: '#FDF8F6',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${playfair.variable} ${poppins.variable}`}>
+    <html lang='pt-BR' className={`${playfair.variable} ${poppins.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.svg" sizes="any" />
-        <link rel="apple-touch-icon" href="/logo.svg" />
+        <link rel='icon' href='/favicon.svg' sizes='any' />
+        <link rel='apple-touch-icon' href='/logo.svg' />
       </head>
       <body className={poppins.className}>
         <AuthProvider>
-          <div className="min-h-screen">
-            {children}
-          </div>
+          <div className='min-h-screen'>{children}</div>
         </AuthProvider>
       </body>
     </html>

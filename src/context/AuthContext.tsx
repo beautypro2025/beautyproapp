@@ -1,9 +1,12 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { User } from 'firebase/auth'
+import type { User } from 'firebase/auth'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/lib/firebaseConfig'
+
+// Verifica se estamos no ambiente do navegador
+const isBrowser = typeof window !== 'undefined'
 
 interface AuthContextType {
   user: User | null
@@ -21,6 +24,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
+    if (!isBrowser) return
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
       setUser(firebaseUser)
     })
@@ -29,6 +34,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const logout = async () => {
+    if (!isBrowser) return
+
     try {
       await signOut(auth)
       setUser(null)
