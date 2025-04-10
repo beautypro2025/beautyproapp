@@ -11,7 +11,7 @@ export default function NotFound() {
     alert('Página não encontrada! Você será redirecionado para a página inicial.')
 
     // Redireciona para a página inicial após o alerta
-    router.push('/sejabeatutypro')
+    router.push('/sejabeautypro')
   }, [router])
 
   return (
