@@ -5,10 +5,6 @@ const nextConfig = {
     domains: [],
     unoptimized: true,
   },
-  experimental: {
-    esmExternals: false
-  },
-  swcMinify: true,
   transpilePackages: ['@firebase/auth', 'firebase', '@firebase/app', '@firebase/firestore'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -30,21 +26,6 @@ const nextConfig = {
         xmlhttprequest: require.resolve('xmlhttprequest')
       };
     }
-
-    // Adiciona suporte para private class fields
-    config.module.rules.push({
-      test: /\.(js|mjs|jsx|ts|tsx)$/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['next/babel'],
-          plugins: [
-            '@babel/plugin-transform-private-methods',
-            '@babel/plugin-transform-class-properties'
-          ]
-        }
-      }
-    });
 
     config.module.rules.push({
       test: /\.(mp4|webm)$/,

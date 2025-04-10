@@ -42,7 +42,7 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('../sejabeatutypro/page.tsx')
+    router.push('../sejabeautypro')
   }, [router])
 
   return (
