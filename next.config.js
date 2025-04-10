@@ -22,9 +22,6 @@ const nextConfig = {
     '@firebase/firestore',
     'undici'
   ],
-  experimental: {
-    swcMinify: true
-  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -44,11 +41,19 @@ const nextConfig = {
       };
     }
 
+    // Configuração para lidar com módulos ESM e private fields
     config.module.rules.push({
-      test: /node_modules\/undici\/.*\.js$/,
-      type: 'javascript/auto',
-      resolve: {
-        fullySpecified: false
+      test: /\.(js|mjs|jsx|ts|tsx)$/,
+      exclude: /node_modules(?!\/(@firebase|firebase|undici))/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['next/babel'],
+          plugins: [
+            '@babel/plugin-transform-private-methods',
+            '@babel/plugin-transform-class-properties'
+          ]
+        }
       }
     });
 
