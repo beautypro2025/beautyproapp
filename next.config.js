@@ -2,9 +2,19 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['fonts.gstatic.com'],
-    unoptimized: true,
+    unoptimized: false,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fonts.gstatic.com',
+      }
+    ],
   },
+  output: 'standalone',
   transpilePackages: [
     '@firebase/auth',
     'firebase',
@@ -15,7 +25,6 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
-        ...config.resolve.fallback,
         fs: false,
         net: false,
         tls: false,
@@ -32,32 +41,6 @@ const nextConfig = {
         xmlhttprequest: require.resolve('xmlhttprequest')
       };
     }
-
-    config.module.rules.push({
-      test: /\.(mp4|webm)$/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          publicPath: '/_next/static/',
-          outputPath: 'static/',
-          name: '[name].[hash].[ext]',
-        },
-      },
-    });
-
-    // Adiciona suporte para private class fields
-    config.module.rules.push({
-      test: /\.m?js$/,
-      include: /node_modules\/undici/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-          plugins: ['@babel/plugin-transform-private-property-in-object']
-        }
-      }
-    });
-
     return config;
   }
 };
