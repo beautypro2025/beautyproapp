@@ -60,17 +60,17 @@
     font-size: clamp(16px, 1.5vw, 18px);
   }
   img {
-    @apply max-w-full h-auto;
+    @apply h-auto max-w-full;
   }
 }
 
 @layer components {
   .nav-buttons {
-    @apply fixed top-4 right-4 flex gap-4 z-50;
+    @apply fixed right-4 top-4 z-50 flex gap-4;
   }
 
   .nav-button {
-    @apply px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300;
+    @apply rounded-lg px-6 py-2 text-sm font-medium transition-all duration-300;
   }
 
   .nav-button-primary {
@@ -78,11 +78,11 @@
   }
 
   .nav-button-secondary {
-    @apply bg-white/10 backdrop-blur-sm text-white hover:bg-white/20;
+    @apply bg-white/10 text-white backdrop-blur-sm hover:bg-white/20;
   }
 
   .hero-section {
-    @apply relative min-h-screen flex items-center justify-center;
+    @apply relative flex min-h-screen items-center justify-center;
   }
 
   .hero-background {
@@ -95,11 +95,11 @@
   }
 
   .hero-content {
-    @apply relative z-10 text-center text-white max-w-4xl mx-auto px-4;
+    @apply relative z-10 mx-auto max-w-4xl px-4 text-center text-white;
   }
 
   .app-name {
-    @apply text-6xl font-bold mb-8;
+    @apply mb-8 text-6xl font-bold;
   }
 
   .beauty-text {
@@ -112,33 +112,33 @@
   }
 
   .hero-title {
-    @apply text-4xl font-semibold mb-6;
+    @apply mb-6 text-4xl font-semibold;
   }
 
   .hero-subtitle {
-    @apply text-xl text-gray-200 mb-12;
+    @apply mb-12 text-xl text-gray-200;
   }
 
   .hero-buttons {
-    @apply flex gap-6 justify-center;
+    @apply flex justify-center gap-6;
   }
 
   .btn-primary {
-    @apply px-8 py-3 bg-[#4a90e2] text-white rounded-lg font-medium 
-           hover:bg-[#357abd] transition-all duration-300;
+    @apply rounded-lg bg-[#4a90e2] px-8 py-3 font-medium text-white 
+           transition-all duration-300 hover:bg-[#357abd];
   }
 
   .btn-secondary {
-    @apply px-8 py-3 bg-white/10 text-white rounded-lg font-medium 
-           backdrop-blur-sm hover:bg-white/20 transition-all duration-300;
+    @apply rounded-lg bg-white/10 px-8 py-3 font-medium text-white 
+           backdrop-blur-sm transition-all duration-300 hover:bg-white/20;
   }
 
   .feature-card {
-    @apply bg-white/70 backdrop-blur-sm rounded-lg p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 overflow-hidden;
+    @apply overflow-hidden rounded-lg bg-white/70 p-8 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl;
   }
 
   .feature-title {
-    @apply text-gray-900 mb-4;
+    @apply mb-4 text-gray-900;
     font-size: clamp(1.5rem, 4vw, 2.5rem);
   }
 
@@ -153,39 +153,39 @@
   }
 
   .stats-grid {
-    @apply grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12;
+    @apply grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12;
   }
 
   .stats-card {
-    @apply text-center p-6;
+    @apply p-6 text-center;
   }
 
   .stats-number {
-    @apply text-[#b5715f] mb-2;
+    @apply mb-2 text-[#b5715f];
     font-size: clamp(2rem, 6vw, 3.5rem);
     line-height: 1;
   }
 
   .stats-label {
-    @apply text-gray-600 uppercase tracking-wider;
+    @apply uppercase tracking-wider text-gray-600;
     font-size: clamp(0.875rem, 1.5vw, 1rem);
     letter-spacing: 0.1em;
   }
 
   .section-title {
-    @apply text-center mb-12 text-gray-800;
+    @apply mb-12 text-center text-gray-800;
     font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1.2;
   }
 
   .section-subtitle {
-    @apply text-gray-600 text-center mb-12;
+    @apply mb-12 text-center text-gray-600;
     font-size: clamp(1.125rem, 2.5vw, 1.5rem);
     line-height: 1.5;
   }
 
   .image-card {
-    @apply rounded-lg shadow-lg overflow-hidden relative;
+    @apply relative overflow-hidden rounded-lg shadow-lg;
   }
 
   .image-card img {
@@ -198,7 +198,7 @@
   }
 
   .image-overlay {
-    @apply absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 flex items-center justify-center;
+    @apply absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300;
   }
 
   .image-card:hover .image-overlay {
@@ -206,7 +206,7 @@
   }
 
   .image-content {
-    @apply text-white text-center p-6;
+    @apply p-6 text-center text-white;
   }
 
   .bg-pattern {
@@ -214,7 +214,7 @@
   }
 
   .professional-image {
-    @apply rounded-lg overflow-hidden;
+    @apply overflow-hidden rounded-lg;
   }
 
   .professional-image img {
@@ -236,27 +236,33 @@
 }
 
 @keyframes glow-beauty {
-  0%, 100% {
-    text-shadow: 0 0 10px var(--beauty-color),
-                 0 0 20px var(--beauty-color),
-                 0 0 30px var(--beauty-color);
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px var(--beauty-color),
+      0 0 20px var(--beauty-color),
+      0 0 30px var(--beauty-color);
   }
   50% {
-    text-shadow: 0 0 20px var(--beauty-color),
-                 0 0 30px var(--beauty-color),
-                 0 0 40px var(--beauty-color);
+    text-shadow:
+      0 0 20px var(--beauty-color),
+      0 0 30px var(--beauty-color),
+      0 0 40px var(--beauty-color);
   }
 }
 
 @keyframes glow-pro {
-  0%, 100% {
-    text-shadow: 0 0 10px var(--pro-color),
-                 0 0 20px var(--pro-color),
-                 0 0 30px var(--pro-color);
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px var(--pro-color),
+      0 0 20px var(--pro-color),
+      0 0 30px var(--pro-color);
   }
   50% {
-    text-shadow: 0 0 20px var(--pro-color),
-                 0 0 30px var(--pro-color),
-                 0 0 40px var(--pro-color);
+    text-shadow:
+      0 0 20px var(--pro-color),
+      0 0 30px var(--pro-color),
+      0 0 40px var(--pro-color);
   }
 }

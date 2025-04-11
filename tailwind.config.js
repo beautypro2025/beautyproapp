@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -13,11 +13,11 @@ module.exports = {
         poppins: ['var(--font-poppins)'],
       },
       colors: {
-        primary: "#b5715f",
-        "primary-dark": "#8b574a",
-        background: "#FDF8F6"
-      }
+        primary: '#b5715f',
+        'primary-dark': '#8b574a',
+        background: '#FDF8F6',
+      },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
-} 
+  plugins: [require('@tailwindcss/forms')],
+}

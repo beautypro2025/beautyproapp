@@ -1,8 +1,7 @@
-'use client'
-
-import './globals.css'
+import type { Metadata } from 'next'
 import { Playfair_Display, Poppins } from 'next/font/google'
-import { AuthProvider } from '@/context/AuthContext'
+import './globals.css'
+import { ClientLayout } from './ClientLayout'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -17,16 +16,16 @@ const poppins = Poppins({
   display: 'swap',
 })
 
+export const metadata: Metadata = {
+  title: 'BeautyPro',
+  description: 'Transforme seu talento em um negócio de sucesso com o BeautyPro',
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='pt-BR' className={`${playfair.variable} ${poppins.variable}`}>
-      <head>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </head>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   )

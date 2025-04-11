@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
+    "@types/react-input-mask": "^3.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "firebase": "^10.7.0",
@@ -21,12 +22,13 @@
     "react-day-picker": "^9.6.5",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
+    "react-input-mask": "^2.0.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "optionalDependencies": {
-    "@next/swc-win32-x64-msvc": "^15.3.0",
-    "@next/swc-linux-x64-gnu": "^15.3.0"
+    "@next/swc-linux-x64-gnu": "^15.3.0",
+    "@next/swc-win32-x64-msvc": "^15.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

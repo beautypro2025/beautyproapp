@@ -1,62 +1,74 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { User } from 'firebase/auth'
-import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  User,
+} from 'firebase/auth'
 import { auth } from '@/lib/firebaseConfig'
 
 // Verifica se estamos no ambiente do navegador
 const isBrowser = typeof window !== 'undefined'
 
-export interface AuthContextType {
+interface AuthContextType {
   user: User | null
-  signIn: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
+  loading: boolean
+  signInWithGoogle: () => Promise<User | null>
+  signOut: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  signIn: async () => {},
-  logout: async () => {},
-})
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const useAuth = () => useContext(AuthContext)
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!isBrowser) return
-
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
-      setUser(firebaseUser)
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setUser(user)
+      setLoading(false)
     })
 
     return () => unsubscribe()
   }, [])
 
-  const signIn = async (email: string, password: string) => {
-    if (!isBrowser) return
-
+  const signInWithGoogle = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      setUser(userCredential.user)
+      const provider = new GoogleAuthProvider()
+      const result = await signInWithPopup(auth, provider)
+      return result.user
     } catch (error) {
-      console.error('Erro ao fazer login:', error)
+      if (error instanceof Error && error.message.includes('popup')) {
+        // Usuário fechou o pop-up
+        return null
+      }
       throw error
     }
   }
 
-  const logout = async () => {
-    if (!isBrowser) return
-
+  const signOut = async () => {
     try {
-      await signOut(auth)
-      setUser(null)
+      await firebaseSignOut(auth)
     } catch (error) {
       console.error('Erro ao fazer logout:', error)
+      throw error
     }
   }
 
-  return <AuthContext.Provider value={{ user, signIn, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth deve ser usado dentro de um AuthProvider')
+  }
+  return context
 }
