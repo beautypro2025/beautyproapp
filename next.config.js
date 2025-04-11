@@ -2,26 +2,23 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    unoptimized: false,
+    domains: ['fonts.gstatic.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
-      {
-        protocol: 'https',
-        hostname: 'fonts.gstatic.com',
-      }
     ],
+    unoptimized: false,
   },
-  output: 'standalone',
   transpilePackages: [
     '@firebase/auth',
-    'firebase',
     '@firebase/app',
-    '@firebase/firestore',
-    'undici'
+    'firebase'
   ],
+  experimental: {
+    esmExternals: 'loose'
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -29,36 +26,28 @@ const nextConfig = {
         net: false,
         tls: false,
         crypto: false,
-        stream: false,
-        path: false,
-        process: false,
-        buffer: false,
-        util: false,
-        http: false,
-        https: false,
-        url: false,
-        zlib: false,
-      };
+        stream: false
+      }
     }
 
-    // Configuração para lidar com módulos ESM e private fields
+    // Configuração específica para o undici
     config.module.rules.push({
-      test: /\.(js|mjs|jsx|ts|tsx)$/,
-      exclude: /node_modules(?!\/(@firebase|firebase|undici))/,
+      test: /[\\/]node_modules[\\/]undici[\\/].*\.js$/,
       use: {
         loader: 'babel-loader',
         options: {
-          presets: ['next/babel'],
+          presets: ['@babel/preset-env'],
           plugins: [
-            '@babel/plugin-transform-private-methods',
-            '@babel/plugin-transform-class-properties'
-          ]
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
+            ['@babel/plugin-transform-private-methods', { loose: true }]
+          ],
+          sourceType: 'unambiguous'
         }
       }
-    });
+    })
 
-    return config;
+    return config
   }
-};
+}
 
-module.exports = nextConfig; 
+module.exports = nextConfig 
