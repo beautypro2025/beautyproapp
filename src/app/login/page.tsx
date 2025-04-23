@@ -310,12 +310,12 @@ export default function LoginPage() {
   // Se ainda não selecionou o tipo de usuário, mostrar a seleção
   if (!selectedUserType) {
     return (
-      <div className='w-full bg-gradient-to-br from-primary to-secondary px-4 py-8 md:py-12'>
+      <div className='min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary'>
         <motion.div
           variants={containerVariants}
           initial='hidden'
           animate='visible'
-          className='mx-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl sm:p-8'
+          className='w-full max-w-md rounded-2xl bg-white p-6 shadow-xl sm:p-8 m-4'
         >
           <motion.div variants={itemVariants} className='flex flex-col gap-6'>
             <motion.div variants={itemVariants} className='text-center'>
@@ -365,12 +365,12 @@ export default function LoginPage() {
 
   // Resto do código do formulário de login
   return (
-    <div className='w-full bg-gradient-to-br from-primary to-secondary px-4 py-8 md:py-12'>
+    <div className='min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary'>
       <motion.div
         variants={containerVariants}
         initial='hidden'
         animate='visible'
-        className='mx-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl sm:p-8'
+        className='w-full max-w-md rounded-2xl bg-white p-6 shadow-xl sm:p-8 m-4'
       >
         {/* Indicador do tipo de usuário selecionado */}
         <motion.div
