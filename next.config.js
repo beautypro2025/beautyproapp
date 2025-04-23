@@ -6,14 +6,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
-      },
+        hostname: '**'
+      }
     ],
-    unoptimized: false,
+    unoptimized: false
   },
   transpilePackages: ['@firebase/auth', '@firebase/app', 'firebase'],
   experimental: {
-    esmExternals: 'loose',
+    esmExternals: 'loose'
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -22,8 +22,8 @@ const nextConfig = {
         net: false,
         tls: false,
         crypto: false,
-        stream: false,
-      }
+        stream: false
+      };
     }
 
     // Configuração específica para o undici
@@ -35,15 +35,15 @@ const nextConfig = {
           presets: ['@babel/preset-env'],
           plugins: [
             ['@babel/plugin-proposal-class-properties', { loose: true }],
-            ['@babel/plugin-transform-private-methods', { loose: true }],
+            ['@babel/plugin-transform-private-methods', { loose: true }]
           ],
-          sourceType: 'unambiguous',
-        },
-      },
-    })
+          sourceType: 'unambiguous'
+        }
+      }
+    });
 
-    return config
-  },
-}
+    return config;
+  }
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

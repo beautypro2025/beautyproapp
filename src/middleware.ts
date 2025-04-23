@@ -1,28 +1,56 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get('__session')?.value
+export async function middleware(request: NextRequest) {
+  console.log('Middleware executando para:', request.nextUrl.pathname);
+  
+  const token = request.cookies.get('authToken')?.value;
+  const userType = request.cookies.get('userType')?.value;
+  const registrationComplete = request.cookies.get('registrationComplete')?.value;
+  
+  console.log('Token encontrado:', !!token);
+  console.log('Tipo de usuário:', userType);
+  console.log('Cadastro completo:', registrationComplete);
 
-  // Rotas que requerem autenticação
-  const protectedRoutes = ['/dashboard', '/profile', '/settings']
-  const isProtectedRoute = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))
-
-  // Se a rota é protegida e não há token, redireciona para login
-  if (isProtectedRoute && !token) {
-    const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('from', request.nextUrl.pathname)
-    return NextResponse.redirect(loginUrl)
+  // Se não tem token e tenta acessar rota protegida
+  if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+    console.log('Sem token, redirecionando para login');
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Se já está autenticado e tenta acessar login/register, redireciona para dashboard
-  if (token && ['/login', '/register'].includes(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Se tem token mas não tem cadastro completo
+  if (token && !registrationComplete) {
+    // Se não está em uma página de cadastro, redireciona para a página apropriada
+    if (!request.nextUrl.pathname.includes('/cadastro')) {
+      const redirectUrl = userType === 'professional' 
+        ? '/cadastro/professional'
+        : '/cadastro/cliente';
+      console.log(`Redirecionando para completar cadastro: ${redirectUrl}`);
+      return NextResponse.redirect(new URL(redirectUrl, request.url));
+    }
   }
 
-  return NextResponse.next()
+  // Se tem token mas tenta acessar rotas públicas
+  if (token && registrationComplete && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/cadastro')) {
+    console.log('Com token tentando acessar rota pública, redirecionando para dashboard');
+    const dashboardUrl = userType === 'professional' 
+      ? '/dashboard/professional'
+      : '/dashboard/client';
+    const response = NextResponse.redirect(new URL(dashboardUrl, request.url));
+    return response;
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/settings/:path*', '/login', '/register'],
-}
+  matcher: [
+    '/dashboard/:path*',
+    '/profile/:path*',
+    '/settings/:path*',
+    '/login',
+    '/cadastro',
+    '/cadastro/professional',
+    '/cadastro/cliente'
+  ]
+};

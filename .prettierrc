@@ -1,22 +1,25 @@
 {
-  "semi": false,
+  "semi": true,
+  "trailingComma": "none",
   "singleQuote": true,
-  "trailingComma": "es5",
   "printWidth": 100,
   "tabWidth": 2,
   "useTabs": false,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
   "endOfLine": "auto",
-  "jsxSingleQuote": true,
+  "jsxSingleQuote": false,
+  "bracketSameLine": false,
+  "quoteProps": "as-needed",
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindConfig": "./tailwind.config.ts",
   "tailwindFunctions": ["cn", "cva"],
-  "bracketSpacing": true,
-  "arrowParens": "avoid",
   "overrides": [
     {
       "files": "*.{ts,tsx}",
       "options": {
-        "parser": "typescript"
+        "parser": "typescript",
+        "trailingComma": "none"
       }
     }
   ]

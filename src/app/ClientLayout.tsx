@@ -1,11 +1,27 @@
-'use client'
+'use client';
 
-import { AuthProvider } from '@/context/AuthContext'
+import { AuthProvider } from '@/context/AuthContext';
+import { ToastProvider, ToastViewport } from '@/components/ui/toast';
+import { useState } from 'react';
+import { RegistrationAlert } from '@/components/RegistrationAlert';
 
-type Props = {
-  children: React.ReactNode
-}
+export function ClientLayout({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
 
-export function ClientLayout({ children }: Props) {
-  return <AuthProvider>{children}</AuthProvider>
+  return (
+    <AuthProvider>
+      <ToastProvider>
+        {children}
+        <ToastViewport />
+        <RegistrationAlert
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          onCompleteRegistration={() => {
+            setIsOpen(false);
+            // Adicione aqui a lógica para redirecionar para a página de cadastro profissional
+          }}
+        />
+      </ToastProvider>
+    </AuthProvider>
+  );
 }

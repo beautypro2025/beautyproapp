@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
 declare module '@/app/ClientLayout' {
   interface ClientLayoutProps {
-    children: ReactNode
+    children: ReactNode;
   }
 
-  const ClientLayout: React.FC<ClientLayoutProps>
-  export default ClientLayout
+  const ClientLayout: React.FC<ClientLayoutProps>;
+  export default ClientLayout;
 }

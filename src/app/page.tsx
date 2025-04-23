@@ -1,15 +1,15 @@
 // src/app/page.tsx
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    router.push('/sejabeautypro')
-  }, [router])
+    router.push('/sejabeautypro');
+  }, [router]);
 
-  return null
+  return null;
 }

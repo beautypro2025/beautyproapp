@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { DayPicker } from 'react-day-picker'
-import { cn } from '@/lib/utils'
+import * as React from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { DayPicker } from 'react-day-picker';
+import { cn } from '@/lib/utils';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (
@@ -36,12 +36,12 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         day_disabled: 'text-muted-foreground opacity-50',
         day_range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
         day_hidden: 'invisible',
-        ...classNames,
+        ...classNames
       }}
       {...props}
     />
-  )
+  );
 }
-Calendar.displayName = 'Calendar'
+Calendar.displayName = 'Calendar';
 
-export { Calendar }
+export { Calendar };
