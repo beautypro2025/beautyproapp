@@ -34,7 +34,7 @@ export default function SplashPage() {
   const router = useRouter();
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#FDF8F6]">
+    <main className="relative min-h-screen w-full bg-[#FDF8F6]">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('/texture-pattern.svg')] bg-[length:200px_200px] bg-repeat opacity-[0.03]" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#f8e9e4]/30 via-transparent to-[#f8e9e4]/20" />
@@ -166,7 +166,7 @@ export default function SplashPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-12 sm:py-16 md:py-20">
+      <section className="relative flex min-h-[60vh] items-center justify-center py-16 sm:py-20">
         <div className="absolute inset-0">
           <Image
             src="/images/professional-4.jpg"
