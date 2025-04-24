@@ -75,15 +75,26 @@ export default function ClientDashboard() {
   const handleLogout = async () => {
     try {
       setIsLoading(true); // Ativa o loading durante o processo de logout
-      await signOut();
-      // Limpa os cookies de autenticação
+      
+      // Primeiro limpa os cookies
       deleteCookie('authToken');
       deleteCookie('registrationComplete');
+      
+      // Depois faz o signOut do Firebase
+      await signOut();
+      
+      // Força limpeza do estado local
+      setUserData(null);
+      
       // Força uma pequena espera para garantir que tudo foi limpo
       await new Promise(resolve => setTimeout(resolve, 100));
-      router.replace('/login');
+      
+      // Redireciona usando replace e uma URL absoluta
+      window.location.href = '/login';
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
+      // Em caso de erro, ainda tenta redirecionar
+      window.location.href = '/login';
     } finally {
       setIsLoading(false);
     }
