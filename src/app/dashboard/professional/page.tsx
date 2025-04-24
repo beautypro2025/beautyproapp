@@ -8,7 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { LogOut, Menu } from 'lucide-react';
 import { WelcomeModal } from '@/components/WelcomeModal';
-import { getCookie } from 'cookies-next';
+import { getCookie, deleteCookie } from 'cookies-next';
 
 interface ProfessionalData extends DocumentData {
   name: string;
@@ -73,10 +73,18 @@ export default function ProfessionalDashboard() {
 
   const handleLogout = async () => {
     try {
+      setIsLoading(true); // Ativa o loading durante o processo de logout
       await signOut();
+      // Limpa os cookies de autenticação
+      deleteCookie('authToken');
+      deleteCookie('registrationComplete');
+      // Força uma pequena espera para garantir que tudo foi limpo
+      await new Promise(resolve => setTimeout(resolve, 100));
       router.replace('/login');
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
