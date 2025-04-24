@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { LogOut, Menu } from 'lucide-react';
 import { WelcomeModal } from '@/components/WelcomeModal';
+import { getCookie } from 'cookies-next';
 
 interface ProfessionalData extends DocumentData {
   name: string;
@@ -17,7 +18,7 @@ interface ProfessionalData extends DocumentData {
 }
 
 export default function ProfessionalDashboard() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, authInitialized } = useAuth();
   const [userData, setUserData] = useState<ProfessionalData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -26,6 +27,11 @@ export default function ProfessionalDashboard() {
     const loadUserData = async () => {
       console.log('Iniciando carregamento de dados do profissional...');
       
+      if (!authInitialized) {
+        console.log('Aguardando inicialização da autenticação...');
+        return;
+      }
+
       if (!user?.uid) {
         console.log('Usuário não autenticado, redirecionando para login...');
         router.replace('/login');
@@ -34,9 +40,11 @@ export default function ProfessionalDashboard() {
       
       try {
         console.log('Verificando token...');
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          console.log('Token não encontrado, redirecionando para login...');
+        const token = getCookie('authToken');
+        const registrationComplete = getCookie('registrationComplete');
+        
+        if (!token || !registrationComplete) {
+          console.log('Token ou registro não encontrado, redirecionando para login...');
           router.replace('/login');
           return;
         }
@@ -61,7 +69,7 @@ export default function ProfessionalDashboard() {
     };
     
     loadUserData();
-  }, [user, router]);
+  }, [user, router, authInitialized]);
 
   const handleLogout = async () => {
     try {
@@ -72,7 +80,8 @@ export default function ProfessionalDashboard() {
     }
   };
 
-  if (isLoading) {
+  // Mostra loading enquanto a autenticação está sendo inicializada
+  if (!authInitialized || isLoading) {
     return <LoadingSpinner />;
   }
 

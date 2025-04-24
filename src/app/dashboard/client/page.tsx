@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { LogOut, Menu } from 'lucide-react';
 import { WelcomeModal } from '@/components/WelcomeModal';
+import { getCookie } from 'cookies-next';
 
 interface ClientData extends DocumentData {
   name: string;
@@ -18,7 +19,7 @@ interface ClientData extends DocumentData {
 }
 
 export default function ClientDashboard() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, authInitialized } = useAuth();
   const [userData, setUserData] = useState<ClientData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -27,6 +28,11 @@ export default function ClientDashboard() {
     const loadUserData = async () => {
       console.log('Iniciando carregamento de dados do cliente...');
       
+      if (!authInitialized) {
+        console.log('Aguardando inicialização da autenticação...');
+        return;
+      }
+
       if (!user?.uid) {
         console.log('Usuário não autenticado, redirecionando para login...');
         router.replace('/login');
@@ -35,9 +41,11 @@ export default function ClientDashboard() {
       
       try {
         console.log('Verificando token...');
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          console.log('Token não encontrado, redirecionando para login...');
+        const token = getCookie('authToken');
+        const registrationComplete = getCookie('registrationComplete');
+        
+        if (!token || !registrationComplete) {
+          console.log('Token ou registro não encontrado, redirecionando para login...');
           router.replace('/login');
           return;
         }
@@ -62,7 +70,7 @@ export default function ClientDashboard() {
     };
     
     loadUserData();
-  }, [user, router]);
+  }, [user, router, authInitialized]);
 
   const handleLogout = async () => {
     try {
@@ -73,7 +81,8 @@ export default function ClientDashboard() {
     }
   };
 
-  if (isLoading) {
+  // Mostra loading enquanto a autenticação está sendo inicializada
+  if (!authInitialized || isLoading) {
     return <LoadingSpinner />;
   }
 
